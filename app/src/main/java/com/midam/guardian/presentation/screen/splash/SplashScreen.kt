@@ -8,10 +8,18 @@ import androidx.compose.ui.*
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.res.*
 import androidx.compose.ui.tooling.preview.*
+import androidx.navigation.*
 import com.midam.guardian.R
+import com.midam.guardian.presentation.navigation.*
+import kotlinx.coroutines.*
 
 @Composable
-fun SplashScreen() {
+fun SplashScreen(navController: NavHostController) {
+    LaunchedEffect(key1 = true) {
+        delay(5000)
+        navController.popBackStack()
+        navController.navigate(AppScreens.MainScreen.route)
+    }
     Splash()
 }
 
