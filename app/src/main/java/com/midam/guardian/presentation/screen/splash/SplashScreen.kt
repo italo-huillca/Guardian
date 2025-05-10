@@ -3,22 +3,21 @@ package com.midam.guardian.presentation.screen.splash
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.*
-import androidx.compose.ui.graphics.*
-import androidx.compose.ui.res.*
-import androidx.compose.ui.tooling.preview.*
-import androidx.navigation.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import com.midam.guardian.R
-import com.midam.guardian.presentation.navigation.*
-import kotlinx.coroutines.*
+import kotlinx.coroutines.delay
 
 @Composable
-fun SplashScreen(navController: NavHostController) {
+fun SplashScreen(navigationToMain: () -> Unit) {
     LaunchedEffect(key1 = true) {
         delay(5000)
-        navController.popBackStack()
-        navController.navigate(AppScreens.MainScreen.route)
+        navigationToMain()
     }
     Splash()
 }
@@ -32,7 +31,11 @@ fun Splash() {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Image(modifier = Modifier.fillMaxSize(), painter = painterResource(id = R.drawable.logo), contentDescription = "Logo guardian")
+        Image(
+            modifier = Modifier.fillMaxSize(),
+            painter = painterResource(id = R.drawable.logo),
+            contentDescription = "Logo guardian"
+        )
     }
 }
 

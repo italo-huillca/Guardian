@@ -10,11 +10,15 @@ import com.midam.guardian.presentation.screen.splash.*
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = AppScreens.SplashScreen.route){
-        composable(AppScreens.SplashScreen.route){
-            SplashScreen(navController)
+    NavHost(navController = navController, startDestination = SplashScreen.route){
+        composable(SplashScreen.route) {
+            SplashScreen {
+                navController.navigate(MainScreen.route) {
+                    popUpTo(SplashScreen.route) { inclusive = true }
+                }
+            }
         }
-        composable(AppScreens.MainScreen.route){
+        composable(MainScreen.route){
             MainScreen()
         }
     }

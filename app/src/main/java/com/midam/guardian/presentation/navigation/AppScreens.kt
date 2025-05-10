@@ -1,6 +1,13 @@
 package com.midam.guardian.presentation.navigation
 
-sealed class AppScreens(val route:String){
-    object SplashScreen: AppScreens("splash_screen")
-    object MainScreen: AppScreens("main_screen")
+import kotlinx.serialization.Serializable
+
+@Serializable
+object SplashScreen{
+    const val route = "Splash"
+}
+
+@Serializable
+object MainScreen{
+    const val route = "Main"
 }
