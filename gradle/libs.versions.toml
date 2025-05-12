@@ -16,6 +16,10 @@ services = "4.4.2"
 crashlytics = "3.0.2"
 firebaseAuthKtx = "23.2.0"
 firebaseFirestoreKtx = "25.1.4"
+googleAndroidLibrariesMapsplatformSecretsGradlePlugin = "2.0.1"
+playServicesMaps = "19.2.0"
+appcompat = "1.7.0"
+constraintlayout = "2.2.1"
 
 
 [libraries]
@@ -40,6 +44,9 @@ firebase-crashlytics = {module = "com.google.firebase:firebase-crashlytics" }
 firebase-auth = {module = "com.google.firebase:firebase-auth-ktx" }
 firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx", version.ref = "firebaseAuthKtx" }
 firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-firestore-ktx", version.ref = "firebaseFirestoreKtx" }
+play-services-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "playServicesMaps" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -49,3 +56,4 @@ jetbrainsKotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize",  version.ref = "kotlinParcelize"  }
 googleServices = { id = "com.google.gms.google-services", version.ref = "services"}
 crashlytics = {id= "com.google.firebase.crashlytics", version.ref = "crashlytics"}
+google-android-libraries-mapsplatform-secrets-gradle-plugin = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "googleAndroidLibrariesMapsplatformSecretsGradlePlugin" }

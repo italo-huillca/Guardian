@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.jetbrainsKotlinSerialization)
     alias(libs.plugins.googleServices)
     alias(libs.plugins.crashlytics)
+    alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin)
 }
 
 android {
@@ -39,10 +40,23 @@ android {
     }
     buildFeatures {
         compose = true
+        viewBinding = true
     }
 }
+secrets {
+    // To add your Maps API key to this project:
+    // 1. If the secrets.properties file does not exist, create it in the same folder as the local.properties file.
+    // 2. Add this line, where YOUR_API_KEY is your API key:
+    //        MAPS_API_KEY=YOUR_API_KEY
+    propertiesFileName = "secrets.properties"
 
+    // A properties file containing default secret values. This file can be
+    // checked in version control.
+    defaultPropertiesFileName = "local.defaults.properties"
+}
 dependencies {
+    implementation("com.google.android.gms:play-services-maps:19.0.0")
+
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.crashlytics)
     implementation("androidx.navigation:navigation-compose:2.5.0-rc01")
@@ -58,6 +72,9 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.firebase.auth.ktx)
     implementation(libs.firebase.firestore.ktx)
+    implementation(libs.play.services.maps)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.constraintlayout)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
