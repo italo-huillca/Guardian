@@ -1,0 +1,205 @@
+[
+    {
+        "id": "f3cf47217fcceccc",
+        "type": "tab",
+        "label": "Envio datos gps",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "25e08bcdd0d8f739",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "172.22.135.187",
+        "port": 1883,
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": 60,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "0665d2f75dfef624",
+        "type": "mqtt in",
+        "z": "f3cf47217fcceccc",
+        "name": "Mosquitto local",
+        "topic": "gps/ubicacion",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "25e08bcdd0d8f739",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 120,
+        "y": 200,
+        "wires": [
+            [
+                "0dcc6e6e04233915"
+            ]
+        ]
+    },
+    {
+        "id": "0dcc6e6e04233915",
+        "type": "function",
+        "z": "f3cf47217fcceccc",
+        "name": "function 1",
+        "func": "msg.payload = {\n    lat: msg.payload.lat,\n    lon: msg.payload.lon,\n    timestamp: Date.now()\n};\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 300,
+        "y": 200,
+        "wires": [
+            [
+                "8d940cbc277e3844"
+            ]
+        ]
+    },
+    {
+        "id": "3d91861136f36b70",
+        "type": "http request",
+        "z": "f3cf47217fcceccc",
+        "name": "",
+        "method": "PUT",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "https://mochila-guardian.firebaseio.com/ubicaciones/kid1.json",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 890,
+        "y": 200,
+        "wires": [
+            [
+                "d501b0eb5b9cd615"
+            ]
+        ]
+    },
+    {
+        "id": "d501b0eb5b9cd615",
+        "type": "debug",
+        "z": "f3cf47217fcceccc",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1060,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "8d940cbc277e3844",
+        "type": "switch",
+        "z": "f3cf47217fcceccc",
+        "name": "",
+        "property": "payload.lat",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "nnull"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 470,
+        "y": 200,
+        "wires": [
+            [
+                "70be08d0e5c6661d",
+                "44b038a5abfb16ef"
+            ]
+        ]
+    },
+    {
+        "id": "44b038a5abfb16ef",
+        "type": "switch",
+        "z": "f3cf47217fcceccc",
+        "name": "",
+        "property": "payload.lon",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "nnull"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 650,
+        "y": 200,
+        "wires": [
+            [
+                "3d91861136f36b70",
+                "0ceb429e15cb1ab2"
+            ]
+        ]
+    },
+    {
+        "id": "70be08d0e5c6661d",
+        "type": "debug",
+        "z": "f3cf47217fcceccc",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 540,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "0ceb429e15cb1ab2",
+        "type": "debug",
+        "z": "f3cf47217fcceccc",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 780,
+        "y": 280,
+        "wires": []
+    }
+]
