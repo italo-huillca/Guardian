@@ -25,7 +25,7 @@ fun LoginScreen(
 ) {
     val context = LocalContext.current
     val auth = FirebaseAuth.getInstance()
-
+    val scrollState = rememberScrollState()
     var email by remember { mutableStateOf(TextFieldValue("")) }
     var password by remember { mutableStateOf(TextFieldValue("")) }
     var isLoading by remember { mutableStateOf(false) }
@@ -45,10 +45,10 @@ fun LoginScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(paddingValues)
-                    .padding(16.dp),
+                    .padding(16.dp).verticalScroll(scrollState),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
-            ) {
+                ) {
                 Image(painter = painterResource(id = R.drawable.logo), contentDescription = "logo guardian", contentScale = ContentScale.FillHeight,modifier = Modifier.size(300.dp))
                 OutlinedTextField(
                     value = email,
