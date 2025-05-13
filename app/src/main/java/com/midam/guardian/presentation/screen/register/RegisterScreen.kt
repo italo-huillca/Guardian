@@ -19,6 +19,12 @@ import androidx.compose.ui.res.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.midam.guardian.R
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.runtime.saveable.Saver
+import androidx.compose.runtime.saveable.listSaver
+import androidx.compose.ui.text.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -26,14 +32,23 @@ fun RegisterScreen(
     onRegisterSuccess: () -> Unit = {}
 ) {
     val context = LocalContext.current
+    val configuration = LocalConfiguration.current
     val auth = FirebaseAuth.getInstance()
     val firestore = FirebaseFirestore.getInstance()
+    val scrollState = rememberScrollState()
 
-    var email by remember { mutableStateOf(TextFieldValue("")) }
-    var password by remember { mutableStateOf(TextFieldValue("")) }
-    var gender by remember { mutableStateOf(TextFieldValue("")) }
-    var age by remember { mutableStateOf(TextFieldValue("")) }
-    var isLoading by remember { mutableStateOf(false) }
+    val textFieldValueSaver = listSaver<TextFieldValue, Any>(
+        save = { listOf(it.text, it.selection.start, it.selection.end) },
+        restore = { TextFieldValue(it[0] as String, TextRange(it[1] as Int, it[2] as Int)) }
+    )
+
+    var email by rememberSaveable(stateSaver = textFieldValueSaver) { mutableStateOf(TextFieldValue("")) }
+    var password by rememberSaveable(stateSaver = textFieldValueSaver) { mutableStateOf(TextFieldValue("")) }
+    var gender by rememberSaveable(stateSaver = textFieldValueSaver) { mutableStateOf(TextFieldValue("")) }
+    var age by rememberSaveable(stateSaver = textFieldValueSaver) { mutableStateOf(TextFieldValue("")) }
+    var isLoading by rememberSaveable { mutableStateOf(false) }
+
+    val imageSize = if (configuration.screenWidthDp < 600) 200.dp else 300.dp
 
     Scaffold(
         topBar = {
@@ -51,7 +66,7 @@ fun RegisterScreen(
                     .fillMaxSize()
                     .padding(paddingValues)
                     .padding(16.dp)
-                    .verticalScroll(rememberScrollState()),
+                    .verticalScroll(scrollState),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -59,7 +74,7 @@ fun RegisterScreen(
                     painter = painterResource(id = R.drawable.logo),
                     contentDescription = "logo guardian",
                     contentScale = ContentScale.FillHeight,
-                    modifier = Modifier.size(300.dp)
+                    modifier = Modifier.size(imageSize)
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -68,7 +83,8 @@ fun RegisterScreen(
                     value = email,
                     onValueChange = { email = it },
                     label = { Text("Correo Electrónico") },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -78,7 +94,8 @@ fun RegisterScreen(
                     onValueChange = { password = it },
                     label = { Text("Contraseña") },
                     visualTransformation = PasswordVisualTransformation(),
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -104,6 +121,12 @@ fun RegisterScreen(
 
                 Button(
                     onClick = {
+                        if (email.text.isBlank() || password.text.isBlank() || 
+                            gender.text.isBlank() || age.text.isBlank()) {
+                            Toast.makeText(context, "Por favor complete todos los campos", Toast.LENGTH_SHORT).show()
+                            return@Button
+                        }
+                        
                         isLoading = true
                         auth.createUserWithEmailAndPassword(email.text, password.text)
                             .addOnCompleteListener { task ->
