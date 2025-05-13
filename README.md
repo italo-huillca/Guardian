@@ -10,12 +10,12 @@ Permite visualizar la ubicación del niño en tiempo real, recibir alertas de em
 
 ## ✅ To-Do por Etapas del Proyecto
 
-### 🟢 Etapa 1: Login y Registro (✅ en progreso)
+### 🟢 Etapa 1: Login y Registro (✅ completo)
 - Firebase Authentication
 - Pantallas: Splash, Login, Registro
 - Navegación segura con Jetpack Compose
 
-### 🟡 Etapa 2: Mapa y Estado del Dispositivo
+### 🟡 Etapa 2: Mapa y Estado del Dispositivo (en progreso)
 - Google Maps con ubicación del niño
 - Estado del dispositivo (batería y red)
 - Botón flotante para acciones rápidas
