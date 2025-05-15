@@ -11,6 +11,7 @@ import androidx.compose.ui.unit.*
 
 @Composable
 fun MainScreen(
+    onNavigateToMap: () -> Unit
 ) {
     Column(
         Modifier.fillMaxSize().background(Color.White),
@@ -18,5 +19,14 @@ fun MainScreen(
         verticalArrangement = Arrangement.Center,
     ) {
         Text(text = "Pantalla principal", fontSize = 32.sp)
+        Spacer(modifier = Modifier.height(16.dp))
+        Button(
+            onClick = onNavigateToMap,
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.primary
+            )
+        ) {
+            Text("Ver Mapa en Tiempo Real")
+        }
     }
 }
