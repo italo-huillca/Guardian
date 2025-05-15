@@ -8,6 +8,7 @@ import com.midam.guardian.presentation.screen.main.MainScreen
 import com.midam.guardian.presentation.screen.splash.SplashScreen
 import com.midam.guardian.presentation.screen.login.LoginScreen
 import com.midam.guardian.presentation.screen.register.RegisterScreen
+import com.midam.guardian.presentation.screen.map.MapScreen
 
 @Composable
 fun AppNavigation() {
@@ -21,7 +22,11 @@ fun AppNavigation() {
             }
         }
         composable(MainScreen.route) {
-            MainScreen()
+            MainScreen(
+                onNavigateToMap = {
+                    navController.navigate(MapScreen.route)
+                }
+            )
         }
         composable(LoginScreen.route) {
             LoginScreen(
@@ -41,6 +46,9 @@ fun AppNavigation() {
                     popUpTo(RegisterScreen.route) { inclusive = true }
                 }
             }
+        }
+        composable(MapScreen.route) {
+            MapScreen()
         }
     }
 }

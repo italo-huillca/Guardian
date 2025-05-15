@@ -21,3 +21,8 @@ object LoginScreen {
 object RegisterScreen {
     const val route = "Register"
 }
+
+@Serializable
+object MapScreen {
+    const val route = "Map"
+}
