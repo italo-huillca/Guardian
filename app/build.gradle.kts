@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.googleServices)
     alias(libs.plugins.crashlytics)
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
+    id("kotlin-kapt")
 }
 
 secrets {
@@ -49,7 +50,14 @@ android {
     }
 }
 
+val room_version = "2.6.1"
+
+
 dependencies {
+    implementation("androidx.room:room-runtime:$room_version")
+    kapt("androidx.room:room-compiler:$room_version")
+    implementation("androidx.room:room-ktx:$room_version")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$room_version")
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.crashlytics)
     implementation("androidx.navigation:navigation-compose:2.5.0-rc01")
