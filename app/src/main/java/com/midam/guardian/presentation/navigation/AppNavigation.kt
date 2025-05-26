@@ -8,7 +8,8 @@ import com.midam.guardian.presentation.screen.main.MainScreen
 import com.midam.guardian.presentation.screen.splash.SplashScreen
 import com.midam.guardian.presentation.screen.login.LoginScreen
 import com.midam.guardian.presentation.screen.register.RegisterScreen
-import com.midam.guardian.presentation.screen.map.MapScreen
+import com.midam.guardian.presentation.screen.settings.SettingsScreen
+import com.midam.guardian.presentation.screen.notifications.NotificationsScreen
 
 @Composable
 fun AppNavigation() {
@@ -23,8 +24,11 @@ fun AppNavigation() {
         }
         composable(MainScreen.route) {
             MainScreen(
-                onNavigateToMap = {
-                    navController.navigate(MapScreen.route)
+                onNavigateToSettings = {
+                    navController.navigate(SettingsScreen.route)
+                },
+                onNavigateToNotifications = {
+                    navController.navigate(NotificationsScreen.route)
                 }
             )
         }
@@ -47,8 +51,19 @@ fun AppNavigation() {
                 }
             }
         }
-        composable(MapScreen.route) {
-            MapScreen()
+        composable(SettingsScreen.route) {
+            SettingsScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                }
+            )
+        }z
+        composable(NotificationsScreen.route) {
+            NotificationsScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                }
+            )
         }
     }
 }

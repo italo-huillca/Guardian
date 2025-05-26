@@ -26,3 +26,13 @@ object RegisterScreen {
 object MapScreen {
     const val route = "Map"
 }
+
+@Serializable
+object SettingsScreen {
+    const val route = "Settings"
+}
+
+@Serializable
+object NotificationsScreen {
+    const val route = "Notifications"
+}
