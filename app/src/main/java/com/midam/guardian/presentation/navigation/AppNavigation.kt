@@ -57,7 +57,7 @@ fun AppNavigation() {
                     navController.popBackStack()
                 }
             )
-        }z
+        }
         composable(NotificationsScreen.route) {
             NotificationsScreen(
                 onNavigateBack = {
