@@ -17,6 +17,7 @@ crashlytics = "3.0.2"
 firebaseAuthKtx = "23.2.0"
 firebaseFirestoreKtx = "25.1.4"
 firebaseDatabase = "21.0.0"
+firebaseMessaging = "24.1.1"
 
 
 [libraries]
@@ -42,6 +43,7 @@ firebase-auth = {module = "com.google.firebase:firebase-auth-ktx" }
 firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx", version.ref = "firebaseAuthKtx" }
 firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-firestore-ktx", version.ref = "firebaseFirestoreKtx" }
 firebase-database = { group = "com.google.firebase", name = "firebase-database", version.ref = "firebaseDatabase" }
+firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebaseMessaging" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
