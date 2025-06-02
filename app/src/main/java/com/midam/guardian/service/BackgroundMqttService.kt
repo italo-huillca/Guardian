@@ -5,6 +5,7 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
+import android.os.Binder
 import android.os.Build
 import android.os.IBinder
 import android.util.Log
@@ -12,6 +13,7 @@ import androidx.core.app.NotificationCompat
 import com.midam.guardian.MainActivity
 import com.midam.guardian.R
 import com.midam.guardian.model.EmergencyMessage
+import com.midam.guardian.presentation.screen.notifications.NotificationsViewModel
 import kotlinx.serialization.json.Json
 import org.eclipse.paho.client.mqttv3.*
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence
@@ -23,55 +25,35 @@ class BackgroundMqttService : Service() {
     private val mqttClient = MqttClient(serverUri, clientId, MemoryPersistence())
     private val json = Json { ignoreUnknownKeys = true }
     private lateinit var notificationService: NotificationService
-    private val NOTIFICATION_ID = 1
-    private val CHANNEL_ID = "mqtt_service_channel"
+    private var viewModel: NotificationsViewModel? = null
     
     private var isConnected = false
+
+    // Binder para vincular el servicio
+    private val binder = LocalBinder()
+
+    inner class LocalBinder : Binder() {
+        fun getService(): BackgroundMqttService = this@BackgroundMqttService
+    }
+
+    override fun onBind(intent: Intent): IBinder {
+        return binder
+    }
 
     override fun onCreate() {
         super.onCreate()
         notificationService = NotificationService(this)
-        createNotificationChannel()
-        startForeground(NOTIFICATION_ID, createNotification())
         connectMqtt()
     }
 
-    private fun createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                CHANNEL_ID,
-                "Servicio MQTT",
-                NotificationManager.IMPORTANCE_LOW
-            ).apply {
-                description = "Canal para el servicio MQTT en segundo plano"
-            }
-            val notificationManager = getSystemService(NotificationManager::class.java)
-            notificationManager.createNotificationChannel(channel)
-        }
-    }
-
-    private fun createNotification(): android.app.Notification {
-        val intent = Intent(this, MainActivity::class.java)
-        val pendingIntent = PendingIntent.getActivity(
-            this,
-            0,
-            intent,
-            PendingIntent.FLAG_IMMUTABLE
-        )
-
-        return NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle("Guardian")
-            .setContentText("Servicio de monitoreo activo")
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setContentIntent(pendingIntent)
-            .build()
+    fun setViewModel(viewModel: NotificationsViewModel) {
+        this.viewModel = viewModel
+        notificationService.setViewModel(viewModel)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         return START_STICKY
     }
-
-    override fun onBind(intent: Intent?): IBinder? = null
 
     private fun connectMqtt() {
         try {
