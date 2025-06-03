@@ -15,16 +15,16 @@ Permite visualizar la ubicación del niño en tiempo real, recibir alertas de em
 - Pantallas: Splash, Login, Registro
 - Navegación segura con Jetpack Compose
 
-### 🟡 Etapa 2: Mapa y Estado del Dispositivo (en progreso)
+### 🟡 Etapa 2: Mapa y Estado del Dispositivo (✅ completo)
 - Google Maps con ubicación del niño
 - Estado del dispositivo (batería y red)
 - Botón flotante para acciones rápidas
 
-### 🟠 Etapa 3: Ubicación en Tiempo Real
+### 🟠 Etapa 3: Ubicación en Tiempo Real (✅ completo)
 - Foreground Service para envío de ubicación cada 5–10 segundos
 - Almacenamiento en Firebase Realtime Database
 
-### 🟣 Etapa 4: Historial de Rutas
+### 🟣 Etapa 4: Historial de Rutas (En progreso)
 - Firestore con historial por día
 - Visualización en mapa y listado de lugares visitados
 
@@ -32,7 +32,7 @@ Permite visualizar la ubicación del niño en tiempo real, recibir alertas de em
 - Crear geocercas y detectar salidas
 - Notificaciones de alerta para los padres
 
-### 🔴 Etapa 6: Botón de Emergencia
+### 🔴 Etapa 6: Botón de Emergencia (✅ completo)
 - Lectura GPIO desde ESP32
 - Alerta instantánea vía Firebase Cloud Messaging (FCM)
 
