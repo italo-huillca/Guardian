@@ -12,12 +12,14 @@ import com.midam.guardian.R
 import com.midam.guardian.presentation.screen.map.MapScreen
 import com.midam.guardian.presentation.screen.safezones.SafeZonesScreen
 import com.midam.guardian.presentation.screen.history.HistoryScreen
+import com.midam.guardian.presentation.screen.notifications.NotificationsViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
     onNavigateToSettings: () -> Unit = {},
-    onNavigateToNotifications: () -> Unit = {}
+    onNavigateToNotifications: () -> Unit = {},
+    notificationsViewModel: NotificationsViewModel? = null
 ) {
     var selectedTab by remember { mutableStateOf(0) }
     val tabs = listOf("Mapa", "Zonas Seguras", "Historial")
