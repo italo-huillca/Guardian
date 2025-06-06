@@ -14,8 +14,9 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.*
-import com.google.firebase.auth.FirebaseAuth
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.midam.guardian.R
+import com.midam.guardian.data.auth.AuthManager
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -24,11 +25,30 @@ fun LoginScreen(
     onNavigateToRegister: () -> Unit = {}
 ) {
     val context = LocalContext.current
-    val auth = FirebaseAuth.getInstance()
+    val authRepository = remember { AuthManager.getInstance(context) }
+    val viewModel: LoginViewModel = viewModel { LoginViewModel(authRepository) }
+    
+    val uiState by viewModel.uiState.collectAsState()
+    val isAuthenticated by viewModel.isAuthenticated.collectAsState()
+    
     val scrollState = rememberScrollState()
     var email by remember { mutableStateOf(TextFieldValue("")) }
     var password by remember { mutableStateOf(TextFieldValue("")) }
-    var isLoading by remember { mutableStateOf(false) }
+
+    // Navegar automáticamente si el usuario ya está autenticado
+    LaunchedEffect(isAuthenticated) {
+        if (isAuthenticated) {
+            onLoginSuccess()
+        }
+    }
+
+    // Mostrar mensaje de error si existe
+    LaunchedEffect(uiState.errorMessage) {
+        uiState.errorMessage?.let { message ->
+            Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+            viewModel.clearError()
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -50,11 +70,13 @@ fun LoginScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                 Image(painter = painterResource(id = R.drawable.logo), contentDescription = "logo guardian", contentScale = ContentScale.FillHeight,modifier = Modifier.size(300.dp))
+                
                 OutlinedTextField(
                     value = email,
                     onValueChange = { email = it },
                     label = { Text("Correo Electrónico") },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    enabled = !uiState.isLoading
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -64,29 +86,20 @@ fun LoginScreen(
                     onValueChange = { password = it },
                     label = { Text("Contraseña") },
                     visualTransformation = PasswordVisualTransformation(),
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    enabled = !uiState.isLoading
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Button(
                     onClick = {
-                        isLoading = true
-                        auth.signInWithEmailAndPassword(email.text, password.text)
-                            .addOnCompleteListener { task ->
-                                isLoading = false
-                                if (task.isSuccessful) {
-                                    Toast.makeText(context, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show()
-                                    onLoginSuccess()
-                                } else {
-                                    Toast.makeText(context, "Error: ${task.exception?.message}", Toast.LENGTH_LONG).show()
-                                }
-                            }
+                        viewModel.signIn(email.text, password.text)
                     },
                     modifier = Modifier.fillMaxWidth(),
-                    enabled = !isLoading
+                    enabled = !uiState.isLoading
                 ) {
-                    if (isLoading) {
+                    if (uiState.isLoading) {
                         CircularProgressIndicator(
                             modifier = Modifier.size(24.dp),
                             color = MaterialTheme.colorScheme.onPrimary
@@ -98,7 +111,8 @@ fun LoginScreen(
 
                 TextButton(
                     onClick = { onNavigateToRegister() },
-                    modifier = Modifier.padding(top = 8.dp)
+                    modifier = Modifier.padding(top = 8.dp),
+                    enabled = !uiState.isLoading
                 ) {
                     Text("¿No tienes cuenta? Regístrate")
                 }
