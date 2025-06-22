@@ -18,10 +18,14 @@ class NotificationService(private val context: Context) {
     private val channelId = "emergency_channel"
     private val channelName = "Alertas de Emergencia"
     private val channelDescription = "Canal para notificaciones de emergencia"
+    private val geofenceChannelId = "geofence_channel"
+    private val geofenceChannelName = "Alertas de Geofencing"
+    private val geofenceChannelDescription = "Canal para notificaciones de geofencing"
     private var viewModel: NotificationsViewModel? = null
 
     init {
         createNotificationChannel()
+        createGeofenceChannel()
     }
 
     fun setViewModel(viewModel: NotificationsViewModel) {
@@ -38,6 +42,22 @@ class NotificationService(private val context: Context) {
             ).apply {
                 description = channelDescription
                 enableVibration(true)
+                enableLights(true)
+            }
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
+
+    private fun createGeofenceChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                geofenceChannelId,
+                geofenceChannelName,
+                NotificationManager.IMPORTANCE_HIGH
+            ).apply {
+                description = geofenceChannelDescription
+                enableVibration(true)
+                vibrationPattern = longArrayOf(0, 500, 200, 500) // Patrón de vibración personalizado
                 enableLights(true)
             }
             notificationManager.createNotificationChannel(channel)
@@ -81,6 +101,43 @@ class NotificationService(private val context: Context) {
             Log.d(TAG, "Notificación del sistema mostrada")
         } catch (e: Exception) {
             Log.e(TAG, "Error al mostrar notificación: ${e.message}")
+            e.printStackTrace()
+        }
+    }
+
+    fun showGeofenceNotification(title: String, message: String) {
+        try {
+            Log.d(TAG, "Procesando notificación de geofencing: $title - $message")
+            
+            // Guardar en la base de datos a través del ViewModel
+            viewModel?.addNotification(title, message)
+            
+            // Mostrar notificación del sistema
+            val intent = Intent(context, MainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            }
+            
+            val pendingIntent = PendingIntent.getActivity(
+                context,
+                0,
+                intent,
+                PendingIntent.FLAG_IMMUTABLE
+            )
+
+            val notification = NotificationCompat.Builder(context, geofenceChannelId)
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setContentTitle(title)
+                .setContentText(message)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setAutoCancel(true)
+                .setContentIntent(pendingIntent)
+                .setVibrate(longArrayOf(0, 500, 200, 500)) // Mismo patrón que el canal
+                .build()
+
+            notificationManager.notify(System.currentTimeMillis().toInt(), notification)
+            Log.d(TAG, "Notificación de geofencing mostrada")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error al mostrar notificación de geofencing: ${e.message}")
             e.printStackTrace()
         }
     }
