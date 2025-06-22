@@ -24,11 +24,11 @@ Permite visualizar la ubicación del niño en tiempo real, recibir alertas de em
 - Foreground Service para envío de ubicación cada 5–10 segundos
 - Almacenamiento en Firebase Realtime Database
 
-### 🟣 Etapa 4: Historial de Rutas (En progreso)
+### 🟣 Etapa 4: Historial de Rutas (✅ completo)
 - Firestore con historial por día
 - Visualización en mapa y listado de lugares visitados
 
-### 🔵 Etapa 5: Zonas Seguras (Geofencing)
+### 🔵 Etapa 5: Zonas Seguras (Geofencing) (✅ completo)
 - Crear geocercas y detectar salidas
 - Notificaciones de alerta para los padres
 
@@ -36,7 +36,7 @@ Permite visualizar la ubicación del niño en tiempo real, recibir alertas de em
 - Lectura GPIO desde ESP32
 - Alerta instantánea vía Firebase Cloud Messaging (FCM)
 
-### ⚫ Etapa 7: Optimización y Funciones Avanzadas
+### ⚫ Etapa 7: Optimización y Funciones Avanzadas (en progreso)
 - Ahorro de batería
 - Reconexión automática
 - Exportación de rutas (PDF, Excel)
