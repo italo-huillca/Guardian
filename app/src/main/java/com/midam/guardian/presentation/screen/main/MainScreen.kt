@@ -10,7 +10,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.midam.guardian.R
 import com.midam.guardian.presentation.screen.map.MapScreen
-import com.midam.guardian.presentation.screen.safezones.SafeZonesScreen
+import com.midam.guardian.presentation.screen.routes.RoutesScreen
 import com.midam.guardian.presentation.screen.history.HistoryScreen
 import com.midam.guardian.presentation.screen.notifications.NotificationsViewModel
 
@@ -49,9 +49,9 @@ fun MainScreen(
                         icon = {
                             Icon(
                                 imageVector = when (index) {
-                                    0 -> Icons.Default.Home
-                                    1 -> Icons.Default.LocationOn
-                                    else -> Icons.Default.Refresh
+                                    0 -> Icons.Default.LocationOn
+                                    1 -> Icons.Default.Lock
+                                    else -> Icons.Default.DateRange
                                 },
                                 contentDescription = title
                             )
@@ -71,7 +71,7 @@ fun MainScreen(
         ) {
             when (selectedTab) {
                 0 -> MapScreen()
-                1 -> SafeZonesScreen()
+                1 -> RoutesScreen()
                 2 -> HistoryScreen()
             }
         }
