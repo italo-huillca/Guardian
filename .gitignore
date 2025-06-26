@@ -34,3 +34,9 @@ google-services.json
 secrets.properties
 local.defaults.properties
 app/src/main/java/com/midam/guardian/service/MqttService.kt
+IoT/guardian/guardian.ino
+INSTRUCCIONES_GEOFENCING.md
+INSTRUCCIONES_MOTOR_VIBRACION.md
+IoT/node-red-flows-dashboard.json
+IoT/node-red-flows-geofencing.json
+MqttService.kt
