@@ -23,6 +23,11 @@ import com.midam.guardian.presentation.navigation.*
 import com.midam.guardian.presentation.screen.notifications.NotificationsViewModel
 import com.midam.guardian.service.BackgroundMqttService
 import com.midam.guardian.ui.theme.GuardianTheme
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 
 class MainActivity : ComponentActivity() {
     private var mqttService: BackgroundMqttService? = null
@@ -46,9 +51,30 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    private val requestPermissionsLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+            // Pedes manejar la respuesta aquí si quieres
+        }
+
+    private fun requestAllPermissionsIfNeeded() {
+        val permissionsToRequest = mutableListOf<String>()
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            permissionsToRequest.add(Manifest.permission.ACCESS_FINE_LOCATION)
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                permissionsToRequest.add(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
+        if (permissionsToRequest.isNotEmpty()) {
+            requestPermissionsLauncher.launch(permissionsToRequest.toTypedArray())
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         FirebaseApp.initializeApp(this)
+        requestAllPermissionsIfNeeded()
         
         // Iniciar y vincular el servicio MQTT
         Intent(this, BackgroundMqttService::class.java).also { intent ->
