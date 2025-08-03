@@ -1,79 +1,56 @@
-# 🎒 Guardian - App Móvil de Seguridad Infantil con GPS
+# Guardian
 
-## 🎯 Objetivo
-
-En el Perú, más de 12,468 menores desaparecen cada año.  
-**Guardian** es una **aplicación móvil Android** que forma parte de una solución inteligente para padres de familia, al integrarse con una **mochila GPS con botón de emergencia**.  
-Permite visualizar la ubicación del niño en tiempo real, recibir alertas de emergencia y monitorear su seguridad escolar.
+Aplicación móvil con geolocalización en tiempo real, conectada a un dispositivo IoT y automatizada mediante Node-RED.
 
 ---
 
-## ✅ To-Do por Etapas del Proyecto
+## Características principales
 
-### 🟢 Etapa 1: Login y Registro (✅ completo)
-- Firebase Authentication
-- Pantallas: Splash, Login, Registro
-- Navegación segura con Jetpack Compose
-
-### 🟡 Etapa 2: Mapa y Estado del Dispositivo (✅ completo)
-- Google Maps con ubicación del niño
-- Estado del dispositivo (batería y red)
-- Botón flotante para acciones rápidas
-
-### 🟠 Etapa 3: Ubicación en Tiempo Real (✅ completo)
-- Foreground Service para envío de ubicación cada 5–10 segundos
-- Almacenamiento en Firebase Realtime Database
-
-### 🟣 Etapa 4: Historial de Rutas (✅ completo)
-- Firestore con historial por día
-- Visualización en mapa y listado de lugares visitados
-
-### 🔵 Etapa 5: Zonas Seguras (Geofencing) (✅ completo)
-- Crear geocercas y detectar salidas
-- Notificaciones de alerta para los padres
-
-### 🔴 Etapa 6: Botón de Emergencia (✅ completo)
-- Lectura GPIO desde ESP32
-- Alerta instantánea vía Firebase Cloud Messaging (FCM)
-
-### ⚫ Etapa 7: Optimización y Funciones Avanzadas (en progreso)
-- Ahorro de batería
-- Reconexión automática
-- Exportación de rutas (PDF, Excel)
+- Geolocalización en tiempo real desde un módulo GPS conectado a ESP32
+- Botón de emergencia que envía alertas automáticas
+- Backend sin servidor usando Node-RED y Firebase
+- Interfaz móvil construida con Jetpack Compose (Android)
+- Autenticación de usuario (login y registro)
+- Historial de ubicaciones almacenado en la nube
+- Comunicación con altavoz remoto vía MQTT
 
 ---
 
-## 🧱 Estructura del Proyecto
+## Tecnologías usadas
 
-- **data/**  
-  Repositorios, servicios Firebase, fuentes de datos y lógica de red/local.
+| Componente       | Tecnología                        |
+|------------------|-----------------------------------|
+| Frontend móvil   | Kotlin + Jetpack Compose          |
+| Backend IoT      | ESP32 + GPS (NEO-6M)              |
+| Comunicación     | MQTT (Mosquitto)                  |
+| Automatización   | Node-RED + Firebase               |
+| Almacenamiento   | Firebase Realtime Database        |
 
-- **domain/**  
-  Casos de uso, modelos de lógica empresarial, independientes del framework Android.
-
-- **presentation/**  
-  Interfaz gráfica con Jetpack Compose, organizada por pantallas:
-  - `screen/`: Login, Registro, Mapa, Historial, Emergencia, etc.
-  - `navigation/`: Configuración de rutas.
-  - `component/`: Reutilizables UI (botones, inputs, headers).
-  - `theme/`: Colores, tipografía y estilos.
-
-- **MainActivity.kt**  
-  Entrada principal de la app.
 
 ---
 
-## 🛠️ Tecnologías y Herramientas
+## Video funcionamiento + app movil
 
-- **Lenguaje:** Kotlin
-- **UI:** Jetpack Compose
-- **Navegación:** Navigation Compose
-- **Base de datos:** Firebase Realtime Database, Firestore
-- **Autenticación:** Firebase Authentication
-- **Mapas y ubicación:** Google Maps SDK, FusedLocationProviderClient
-- **Servicios:** Foreground Service, Geofencing
-- **Notificaciones:** Firebase Cloud Messaging (FCM)
-- **Hardware externo:** ESP32 + GPS A9G + botón físico
-- **Control de versiones:** Git + GitHub
+- [Ver demo](https://drive.google.com/file/d/1xDzt8mqWVasORswg8ScbutHSZfAeQOhm/view?usp=sharing)
 
 ---
+
+
+## Dispositivo IOT / Flujo automatizado Node-red
+
+![Dispositivo](images/prototipo.jpeg)
+![Node-Red](images/node-red.png)
+
+---
+
+## Informe y documentación
+
+- [Informe técnico del proyecto](https://drive.google.com/file/d/1hJd60UWyFOhSU3GZ4q37ByGUJCWPzIIv/view?usp=sharing)
+- [Presentación final (PDF)](https://drive.google.com/file/d/1IY1jpYNLZe4DnRCiNBd_g9QQTHAvcSog/view?usp=sharing)
+
+---
+
+## Autor
+
+**Italo H.**  
+[LinkedIn](https://linkedin.com/in/italo-huillca) · [Correo](mailto:huillca.italo@gmail.com)
